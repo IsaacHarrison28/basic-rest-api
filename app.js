@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 const productsRouter = require("./api/routes/products");
 
 const app = express();
-mongoose.connect(
-  `mongodb+srv://sateonlineservices:${process.env.AccessPassword}@acad-node-js-practice.xu0gemh.mongodb.net/?retryWrites=true&w=majority`
-);
+mongoose.connect(`${process.env.DatabaseUrl}`);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
