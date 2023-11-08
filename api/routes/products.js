@@ -5,18 +5,28 @@ const mongoose = require("mongoose");
 
 router.get("/", (req, res, next) => {
   Product.find()
+    .select("name price _id rating")
     .exec()
     .then((items) => {
-      if (items) {
-        res.status(200).json(items);
-      } else {
-        res.status(404).json({
-          message: "Your database is empty!",
-        });
-      }
+      const response = {
+        count: items.length,
+        products: items.map((itemsData) => {
+          return {
+            _id: itemsData._id,
+            name: itemsData.name,
+            price: itemsData.price,
+            rating: itemsData.rating,
+            request: {
+              type: "GET",
+              url: `localhost:5000/products/${itemsData._id}`,
+            },
+          };
+        }),
+      };
+      res.json(response);
     })
     .catch((err) => {
-      console.log(error);
+      console.log(err);
       res.status(500).json(err);
     });
 });
